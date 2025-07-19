@@ -1,0 +1,368 @@
+/* General Setup & Google Fonts */
+body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    overflow: hidden; /* Prevents scrollbars during transitions */
+}
+
+h1, h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+p {
+    font-family: 'Lora', serif;
+}
+
+/* Scene Management */
+.scene {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: opacity 0.8s ease-in-out;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.hidden {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Scene 1: Welcome & Catch the Button */
+#scene1 {
+    background: linear-gradient(135deg, #f8cdda 0%, #d9abf7 100%);
+}
+
+.welcome-container {
+    padding: 20px;
+    max-width: 500px;
+}
+
+#catch-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    color: white;
+    background-color: #ff69b4; /* Hot Pink */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute; /* For the game */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#catch-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Scene 2: Letter Modal */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 700px;
+    height: 70vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slide-down 0.5s ease-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.letter-body {
+    font-family: 'Lora', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: left;
+    color: #555;
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Scene 3: Constellation */
+#scene3 {
+    background: #000010;
+    overflow: hidden;
+}
+
+.constellation-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#constellation-instruction {
+    color: #fff;
+    opacity: 0.8;
+    position: absolute;
+    top: 10%;
+    width: 100%;
+    text-align: center;
+    z-index: 20; /* Ensure instruction is on top */
+}
+
+/* INTERACTIVE STARS */
+.star {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 20px #fff, 0 0 40px #fff, 0 0 60px #00aaff;
+    animation: pulse 2s infinite;
+    transition: transform 0.3s;
+    z-index: 10; /* Make sure stars are above SVG */
+    pointer-events: auto; /* Ensure stars are clickable */
+}
+
+.star:hover {
+    transform: scale(1.3);
+}
+
+.star.connected {
+    background-color: #ffeb3b; /* Yellow when connected */
+    box-shadow: 0 0 20px #ffeb3b, 0 0 40px #ffeb3b;
+    animation: none;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.95); }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(0.95); }
+}
+
+/* DECORATIVE STARS - NEW */
+.bg-star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    animation: twinkle-bg 3s infinite linear;
+}
+
+@keyframes twinkle-bg {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+}
+
+
+/* SVG CANVAS FOR LINES - FIXED */
+#constellation-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none; /* IMPORTANT: This lets clicks pass through to the stars */
+}
+
+#constellation-reveal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5rem;
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 90%;
+    max-width: 800px;
+    font-family: 'Lora', serif;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+    text-shadow: 0 0 15px #fff;
+    z-index: 20;
+}
+
+#next-to-wishing-jar {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 25px;
+    font-size: 1rem;
+    background: #ffffff33;
+    color: white;
+    border: 1px solid white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s;
+    z-index: 20;
+}
+
+#next-to-wishing-jar:hover {
+    background: #ffffff55;
+}
+
+/* Scene 4: Wishing Jar */
+#scene4 {
+    background-color: #fdf5e6; /* Seashell */
+}
+
+.wishing-jar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 600px;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #777;
+    margin-top: -10px;
+}
+
+#wish-input {
+    width: 100%;
+    max-width: 400px;
+    height: 100px;
+    margin: 20px 0;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-family: 'Lora', serif;
+    font-size: 1.1rem;
+    resize: none;
+}
+
+#send-to-jar-btn {
+    padding: 12px 25px;
+    font-size: 1rem;
+    color: white;
+    background-color: #20b2aa; /* Light Sea Green */
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#send-to-jar-btn:hover {
+    background-color: #1a8f89;
+}
+
+#jar-container {
+    position: relative;
+    margin-top: 40px;
+    width: 150px;
+    height: 200px;
+}
+
+.jar {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 180px;
+    background: rgba(200, 225, 255, 0.4);
+    border: 2px solid rgba(150, 200, 255, 0.8);
+    border-bottom: 5px solid rgba(150, 200, 255, 0.8);
+    border-radius: 15px 15px 60px 60px / 15px 15px 90px 90px;
+}
+
+.jar-lid {
+    position: absolute;
+    top: 0;
+    left: -5px;
+    width: 160px;
+    height: 25px;
+    background: rgba(150, 200, 255, 0.6);
+    border-radius: 15px 15px 5px 5px;
+    border: 2px solid rgba(150, 200, 255, 0.8);
+}
+
+.wish-orb {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: #ffeb3b;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #ffeb3b, 0 0 25px #ffeb3b;
+    z-index: 10;
+    transition: top 2s cubic-bezier(0.4, 0, 0.8, 1), opacity 2.5s;
+}
+
+#final-message {
+    margin-top: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%;
+        padding: 20px;
+        height: 80vh;
+    }
+    .letter-body {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    #constellation-reveal {
+        font-size: 1.2rem;
+    }
+    #star1 { top: 15%; left: 25%; }
+    #star2 { top: 35%; left: 70%; }
+    #star3 { top: 65%; left: 60%; }
+    #star4 { top: 55%; left: 15%; }
+}
